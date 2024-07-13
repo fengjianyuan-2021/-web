@@ -10,13 +10,13 @@ function generateToken(): string {
   return Array.from(arr, (v) => v.toString(16).padStart(2, '0')).join('');
 }
 
-const user = {
-  id: 'USR-000',
-  avatar: '/assets/avatar.png',
-  firstName: 'Sofia',
-  lastName: 'Rivers',
-  username: 'sofia@devias.io',
-} satisfies User;
+// const user = {
+//   id: 'USR-000',
+//   avatar: '/assets/avatar.png',
+//   firstName: 'Sofia',
+//   lastName: 'Rivers',
+//   username: 'sofia@devias.io',
+// } satisfies User;
 
 export interface SignUpParams {
   firstName: string;
@@ -24,6 +24,7 @@ export interface SignUpParams {
   username: string;
   password: string;
 }
+
 
 export interface SignInWithOAuthParams {
   provider: 'google' | 'discord';
@@ -36,11 +37,13 @@ export interface SignInWithPasswordParams {
 
 export interface ResetPasswordParams {
   username: string;
+  password: string;
 }
 
 interface AuthResponse {
   token: string;
 }
+
 
 class AuthClient {
   /**
@@ -60,15 +63,6 @@ class AuthClient {
   }
 
   /**
-   * 使用 OAuth 登录
-   * @param {SignInWithOAuthParams} params - OAuth 登录参数
-   * @returns {Promise<{ error?: string }>} 返回包含错误信息的 Promise 对象
-   */
-  async signInWithOAuth(_: SignInWithOAuthParams): Promise<{ error?: string }> {
-    return { error: '社交认证未实现' };
-  }
-
-  /**
    * 使用密码登录
    * @param {SignInWithPasswordParams} params - 登录参数，包括邮箱和密码
    * @returns {Promise<{ error?: string }>} 返回包含错误信息的 Promise 对象
@@ -76,30 +70,33 @@ class AuthClient {
   async signInWithPassword(params: SignInWithPasswordParams): Promise<{ error?: string }> {
     const { username, password } = params;
     try {
-      const response = await axios.post<{ token: string; userId: string }>(`${API_BASE_URL}/api/Auth/login`, { username: username, password });
-      console.log(response);
-      const { token, userId } = response.data;
+      const response = await axios.post<{ token: string; user: User }>(`${API_BASE_URL}/api/Auth/login`, { username, password });
+      const { token, user } = response.data;
+  
       localStorage.setItem('custom-auth-token', token);
-      localStorage.setItem('current-user-id', userId); // 存储用户ID
+      console.log("useruseruseruser "+user);
+      console.log("useruseruseruser123123123 "+JSON.stringify(user));
+      localStorage.setItem('current-user', JSON.stringify(user)); // 存储用户信息
+  
       return {};
     } catch (error) {
       return { error: this.getErrorMessage(error) || '无效的凭据' };
     }
   }
 
-  /**
+ /**
    * 重置密码
-   * @param {ResetPasswordParams} params - 重置密码参数，包括邮箱
+   * @param {ResetPasswordParams} params - 重置密码参数，包括用户名和新密码
    * @returns {Promise<{ error?: string }>} 返回包含错误信息的 Promise 对象
    */
-  async resetPassword(params: ResetPasswordParams): Promise<{ error?: string }> {
-    try {
-      await axios.post(`${API_BASE_URL}/api/Auth/reset-password`, params);
-      return {};
-    } catch (error) {
-      return { error: this.getErrorMessage(error) || '密码重置失败' };
-    }
+ async resetPassword(params: ResetPasswordParams): Promise<{ error?: string }> {
+  try {
+    await axios.post(`${API_BASE_URL}/api/Auth/change-password`, params);
+    return {};
+  } catch (error) {
+    return { error: this.getErrorMessage(error) || '密码重置失败' };
   }
+}
 
   /**
    * 更新密码

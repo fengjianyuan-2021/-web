@@ -3,14 +3,20 @@ export const paths = {
   auth: { signIn: '/auth/sign-in', signUp: '/auth/sign-up', resetPassword: '/auth/reset-password' },
   dashboard: {
     overviewAdmin: '/dashboard',
-    overviewStduent: '/dashboardStudent',
-    overviewTeacher: '/dashboardTeacher',
     customersAdmin: '/dashboard/customers',
-    customerStduent: '/dashboardStudent/customerStduent',
-    customersTeacher: '/dashboardTeacher/customersTeacher',
     account: '/dashboard/account',
-    integrations: '/dashboard/integrations',
+    // integrations: '/dashboard/integrations',
     settings: '/dashboard/settings',
+  },
+  dashboardStudent:{
+    overviewStudent : '/dashboardStudent',
+    customerStudent: '/dashboard/customers',
+    accountStudent:'/dashboard/account'
+  },
+  dashboardTeacher:{
+    overviewTeacher: '/dashboardTeacher',
+    customersTeacher: '/dashboard/customers',
+    accountTeacher:'/dashboard/account'
   },
   errors: { notFound: '/errors/not-found' },
 } as const;

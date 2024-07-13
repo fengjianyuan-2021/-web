@@ -1,3 +1,4 @@
+
 export interface NavItemConfig {
   key: string;
   title?: string;
@@ -7,6 +8,7 @@ export interface NavItemConfig {
   icon?: string;
   href?: string;
   items?: NavItemConfig[];
+  role?: UrlRole;
   // Matcher cannot be a function in order
   // to be able to use it on the server.
   // If you need to match multiple paths,

@@ -81,12 +81,6 @@ const onSubmit = React.useCallback(
     <Stack spacing={4}>
       <Stack spacing={1}>
         <Typography variant="h4">登录</Typography>
-        <Typography color="text.secondary" variant="body2">
-          没有账号?{' '}
-          <Link component={RouterLink} href={paths.auth.signUp} underline="hover" variant="subtitle2">
-            注册
-          </Link>
-        </Typography>
       </Stack>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={2}>

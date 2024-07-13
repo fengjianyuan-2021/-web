@@ -16,6 +16,7 @@ import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
 import { logger } from '@/lib/default-logger';
 import { useUser } from '@/hooks/use-user';
+import { getCurrentUser } from '@/types/user';
 
 export interface UserPopoverProps {
   anchorEl: Element | null;
@@ -47,7 +48,7 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
       logger.error('Sign out error', err);
     }
   }, [checkSession, router]);
-
+  const currentUser = getCurrentUser();
   return (
     <Popover
       anchorEl={anchorEl}
@@ -57,9 +58,9 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
       slotProps={{ paper: { sx: { width: '240px' } } }}
     >
       <Box sx={{ p: '16px 20px ' }}>
-        <Typography variant="subtitle1">Sofia Rivers</Typography>
+        <Typography variant="subtitle1"> {currentUser?.fullname}</Typography>
         <Typography color="text.secondary" variant="body2">
-          sofia.rivers@devias.io
+         {currentUser?.username}
         </Typography>
       </Box>
       <Divider />
@@ -68,19 +69,19 @@ export function UserPopover({ anchorEl, onClose, open }: UserPopoverProps): Reac
           <ListItemIcon>
             <GearSixIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Settings
+          公告
         </MenuItem>
         <MenuItem component={RouterLink} href={paths.dashboard.account} onClick={onClose}>
           <ListItemIcon>
             <UserIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Profile
+          个人信息
         </MenuItem>
         <MenuItem onClick={handleSignOut}>
           <ListItemIcon>
             <SignOutIcon fontSize="var(--icon-fontSize-md)" />
           </ListItemIcon>
-          Sign out
+          登出
         </MenuItem>
       </MenuList>
     </Popover>
