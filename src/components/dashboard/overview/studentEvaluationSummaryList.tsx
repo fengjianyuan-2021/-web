@@ -54,7 +54,7 @@ export function StudentEvaluationSummaryList({ orders = [], sx }: StudentEvaluat
         const data = evaluations.map(evaluation => ({
           被评价的学生干部: evaluation.studentCadreName,
           评价者: evaluation.evaluatorName,
-          评价类型: evaluation.evaluationType,
+          评价类型: getEvaluationTypeDescription(evaluation.evaluationType),
           评分: evaluation.score,
           评价内容: evaluation.comments,
           评价日期: evaluation.evaluationDate,
@@ -112,7 +112,6 @@ export function StudentEvaluationSummaryList({ orders = [], sx }: StudentEvaluat
         <CardActions sx={{ justifyContent: 'flex-end' }}>
           <Button
             color="inherit"
-            endIcon={<ArrowRightIcon fontSize="var(--icon-fontSize-md)" />}
             size="small"
             variant="text"
             onClick={handleExport}

@@ -17,38 +17,29 @@ import { Chart } from '@/components/core/chart';
 
 export interface SalesProps {
   chartSeries: { name: string; data: number[] }[];
+  categories: string[];
   sx?: SxProps;
 }
 
-export function Sales({ chartSeries, sx }: SalesProps): React.JSX.Element {
-  const chartOptions = useChartOptions();
+export function ClassHourStats({ chartSeries,categories, sx }: SalesProps): React.JSX.Element {
+  const chartOptions = useChartOptions(categories);
 
   return (
     <Card sx={sx}>
       <CardHeader
-        action={
-          <Button color="inherit" size="small" startIcon={<ArrowClockwiseIcon fontSize="var(--icon-fontSize-md)" />}>
-            Sync
-          </Button>
-        }
-        title="Sales"
+        title="学时统计"
       />
       <CardContent>
         <Chart height={350} options={chartOptions} series={chartSeries} type="bar" width="100%" />
       </CardContent>
       <Divider />
-      <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button color="inherit" endIcon={<ArrowRightIcon fontSize="var(--icon-fontSize-md)" />} size="small">
-          Overview
-        </Button>
-      </CardActions>
     </Card>
   );
 }
 
-function useChartOptions(): ApexOptions {
+function useChartOptions(categories: string[]): ApexOptions {
   const theme = useTheme();
-
+  // const categories = ['User1', 'User2', 'User3', 'User4', 'User5', 'User6', 'User7', 'User8', 'User9', 'User10', 'User11', 'User12']; // 动态生成的用户名列表
   return {
     chart: { background: 'transparent', stacked: false, toolbar: { show: false } },
     colors: [theme.palette.primary.main, alpha(theme.palette.primary.main, 0.25)],
@@ -67,15 +58,23 @@ function useChartOptions(): ApexOptions {
     xaxis: {
       axisBorder: { color: theme.palette.divider, show: true },
       axisTicks: { color: theme.palette.divider, show: true },
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      categories: categories, // 将类别数据动态设置
       labels: { offsetY: 5, style: { colors: theme.palette.text.secondary } },
     },
     yaxis: {
       labels: {
-        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
+        formatter: (value) => (value > 0 ? `${value}` : `${value}`),
         offsetX: -10,
         style: { colors: theme.palette.text.secondary },
       },
     },
   };
 }
+
+// // 使用示例
+// const chartSeries22= [
+//   {
+//     name: '学时',
+//     data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120] // 这是一个示例数据，你需要动态生成
+//   }
+// ];

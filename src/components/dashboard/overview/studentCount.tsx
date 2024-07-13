@@ -14,9 +14,10 @@ export interface StudentCountProps {
   trend: 'up' | 'down';
   sx?: SxProps;
   value: string;
+  title : string;
 }
 
-export function StudentCount({ diff, trend, sx, value }: StudentCountProps): React.JSX.Element {
+export function StudentCount({ diff, trend,title, sx, value }: StudentCountProps): React.JSX.Element {
   const TrendIcon = trend === 'up' ? ArrowUpIcon : ArrowDownIcon;
   const trendColor = trend === 'up' ? 'var(--mui-palette-success-main)' : 'var(--mui-palette-error-main)';
 
@@ -27,7 +28,7 @@ export function StudentCount({ diff, trend, sx, value }: StudentCountProps): Rea
           <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
             <Stack spacing={1}>
               <Typography color="text.secondary" variant="overline">
-                学生总数
+                {title}
               </Typography>
               <Typography variant="h4">{value}</Typography>
             </Stack>

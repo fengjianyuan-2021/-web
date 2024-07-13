@@ -7,10 +7,10 @@ export const navItems: NavItemConfig[] = [
   { key: 'customerStudent', title: '学生干部评价', href: paths.dashboardStudent.customerStudent, icon: 'users', role: UrlRole.StudentCadre },
   // { key: 'accountStudent', title: '学生干部基本信息', href: paths.dashboardStudent.accountStudent, icon: 'user', role: UrlRole.StudentCadre },
   
-  { key: 'overviewTeacher', title: '学生评价统计--教师', href: paths.dashboardTeacher.overviewTeacher, icon: 'chart-pie', role: UrlRole.Teacher },
+  { key: 'overviewTeacher', title: '学生评价统计', href: paths.dashboardTeacher.overviewTeacher, icon: 'chart-pie', role: UrlRole.Teacher },
   { key: 'customersTeacher', title: '学生评分界面', href: paths.dashboardTeacher.customersTeacher, icon: 'users', role: UrlRole.Teacher },
   
-  // { key: 'overviewAdmin', title: '管理员界面', href: paths.dashboard.overviewAdmin, icon: 'chart-pie', role: UrlRole.Admin },
+   { key: 'overviewAdmin', title: '管理员界面', href: paths.dashboard.overviewAdmin, icon: 'chart-pie', role: UrlRole.Admin },
   { key: 'customersAdmin', title: '管理员信息管理界面', href: paths.dashboard.customersAdmin, icon: 'users', role: UrlRole.Admin },
 
   // { key: 'integrations', title: 'Integrations', href: paths.dashboard.integrations, icon: 'plugs-connected', role: UrlRole.Admin },

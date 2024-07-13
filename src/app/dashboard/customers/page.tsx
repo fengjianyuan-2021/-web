@@ -27,6 +27,7 @@ import { User, UserRole, Gender, getCurrentUser, GenderMap, UserRoleMap } from '
 import * as yup from 'yup';
 import * as XLSX from 'xlsx';
 import { json } from 'node:stream/consumers';
+import { Export } from '@phosphor-icons/react';
 
 const validationSchema = yup.object({
   fullname: yup.string().required('姓名是必填项'),
@@ -174,7 +175,8 @@ const Page: React.FC = () => {
       evaluatorId:'',
       evaluatorsorce:0,
       peerAverageScore:'',
-      teacherAverageScore:''
+      teacherAverageScore:'',
+      classhour:0,
     },
     validationSchema: validationSchema,
     onSubmit: handleAddUser,
@@ -198,7 +200,7 @@ const Page: React.FC = () => {
         <Stack spacing={1} sx={{ flex: '1 1 auto' }}>
           <Typography variant="h4">用户管理界面</Typography>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <Button color="inherit" onClick={handleExport} startIcon={<DownloadIcon fontSize="var(--icon-fontSize-md)" />}>
+            <Button color="inherit" onClick={handleExport} startIcon={<Export fontSize="var(--icon-fontSize-md)" />}>
               导出
             </Button>
           </Stack>

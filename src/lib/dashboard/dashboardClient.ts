@@ -25,9 +25,9 @@ class DashboardClient {
  * 
  * @returns {Promise<User[] | string>} 用户列表或错误信息
  */
-async GetDashboardTeacher(): Promise<Dashboard | string> {
+async GetDashboardTeacher(userId : number): Promise<Dashboard | string> {
   try {
-    const response = await axios.post<Dashboard>(`${API_BASE_URL}/api/dashboard/GetDashboardTeacher`, {}, {
+    const response = await axios.post<Dashboard>(`${API_BASE_URL}/api/dashboard/GetDashboardTeacher`, {userId: userId}, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -42,11 +42,30 @@ async GetDashboardTeacher(): Promise<Dashboard | string> {
  /**
  * 获取统计信息 学生查看
  * 
- * @returns {Promise<User[] | string>} 用户列表或错误信息
+ * @returns {Promise<Dashboard[] | string>} 用户列表或错误信息
  */
  async GetDashboardStudent(userId : number): Promise<Dashboard | string> {
   try {
-    const response = await axios.post<Dashboard>(`${API_BASE_URL}/api/dashboard/GetDashboardStudent`, {userId: userId}, {
+    const response = await axios.post<Dashboard>(`${API_BASE_URL}/api/dashboard/GetStudentStatisticsInStudent`, {userId: userId}, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    return this.getErrorMessage(error) || '获取统计信息失败';
+  }
+}
+
+ /**
+ * 获取统计信息 管理员
+ * 
+ * @returns {Promise<Dashboard[] | string>} 用户列表或错误信息
+ */
+ async GetDashboardAll(): Promise<Dashboard | string> {
+  try {
+    const response = await axios.post<Dashboard>(`${API_BASE_URL}/api/dashboard/GetAll`, {}, {
       headers: {
         'Content-Type': 'application/json',
       },

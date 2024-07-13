@@ -24,7 +24,7 @@ export function UnevaluatedStudentCount({ value,valuePercentage, EvaluationType,
         <Stack direction="row" sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }} spacing={3}>
           <Stack spacing={1}>
             <Typography color="text.secondary" gutterBottom variant="overline">
-              未评价人数（{EvaluationType}）
+              {EvaluationType}
             </Typography>
             <Typography variant="h4">{value}</Typography>
           </Stack>

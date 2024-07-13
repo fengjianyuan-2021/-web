@@ -70,6 +70,7 @@ const validationSchema = yup.object({
       then: (schema) => schema.required("分数必须填写"),
       otherwise: (schema) => schema.notRequired()
     }),
+    classhour: yup.number().notRequired().typeError("学时必须是数字"),
   selfEvaluation: yup.string(),
 });
 interface UserFormValues extends User {
@@ -121,13 +122,16 @@ export function CustomersTable({
     formData.append('position', values.position);
     formData.append('organization', values.organization);
     formData.append('passwordHash', values.passwordHash);
-    formData.append('role',values.role.toString());
+    formData.append('role', values.role.toString());
     formData.append('evaluatorsorce', values.evaluatorsorce.toString());
-
-    if(currentUser){
+   
+    if (values.classhour) {
+      formData.append('classhour', values.classhour.toString());
+    }
+    if (currentUser) {
       formData.append('evaluatorId', currentUser.id);
     }
-    
+
     if (values.avatarFile) {
       formData.append('avatarFile', values.avatarFile);
     }
@@ -186,10 +190,11 @@ export function CustomersTable({
       organization: '',
       totalScore: '0',
       passwordHash: '',
-      evaluatorsorce:0,
-      evaluatorId:'',
-      peerAverageScore:'',
-      teacherAverageScore:''
+      evaluatorsorce: 0,
+      evaluatorId: '',
+      peerAverageScore: '',
+      teacherAverageScore: '',
+      classhour: 0,
 
     },
     validationSchema: validationSchema,
@@ -223,6 +228,7 @@ export function CustomersTable({
                 <TableCell>邮箱</TableCell>
                 <TableCell>角色</TableCell>
                 <TableCell>职位</TableCell>
+                <TableCell>学时</TableCell>
                 <TableCell>操作</TableCell>
               </TableRow>
             </TableHead>
@@ -230,7 +236,7 @@ export function CustomersTable({
               {rows.map((row) => {
                 const isSelected = selected?.has(row.id);
                 const isCurrentUser = currentUser ? currentUser.id === String(row.id) : false;
-                const isAdminUser = currentUser? currentUser.role === UserRole.admin :false;
+                const isAdminUser = currentUser ? currentUser.role === UserRole.admin : false;
                 const isStudentCadre = currentUser ? currentUser.role === UserRole.studentCadre : false;
 
                 return (
@@ -247,6 +253,7 @@ export function CustomersTable({
                     <TableCell>{row.email}</TableCell>
                     <TableCell>{UserRoleMap[row.role]}</TableCell>
                     <TableCell>{row.position}</TableCell>
+                    <TableCell>{row.classhour}</TableCell>
                     <TableCell>
                       <Button
                         color="primary"
@@ -256,7 +263,7 @@ export function CustomersTable({
                         disabled={isCurrentUser}
                         sx={{ mr: 1 }}
                       >
-                        { isAdminUser ? '编辑' : '评分'}
+                        {isAdminUser ? '编辑' : '评分'}
                       </Button>
                       <Button
                         color="secondary"
@@ -292,7 +299,7 @@ export function CustomersTable({
             <form onSubmit={formik.handleSubmit}>
               <Stack spacing={2}>
                 <Box sx={{ textAlign: 'center' }}>
-                  <Avatar  src={`data:image/png;base64,${formik.values.avatar}`} sx={{ width: 100, height: 100, mx: 'auto' }} />
+                  <Avatar src={`data:image/png;base64,${formik.values.avatar}`} sx={{ width: 100, height: 100, mx: 'auto' }} />
                   {currentUser?.role === UserRole.admin && (
                     <Button variant="contained" component="label" sx={{ mt: 2 }}>
                       上传头像
@@ -401,19 +408,32 @@ export function CustomersTable({
                   helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                   disabled={currentUser?.role !== UserRole.admin}
                 />
-                 {formik.values.role === UserRole.studentCadre && (
-                  <TextField
-                  fullWidth
-                  label="打分"
-                  name="evaluatorsorce"
-                  value={formik.values.evaluatorsorce}
-                  onChange={formik.handleChange}
-                  error={formik.touched.evaluatorsorce && Boolean(formik.errors.evaluatorsorce)}
-                  helperText={formik.touched.evaluatorsorce && formik.errors.evaluatorsorce}
-                />
-                 )
-                 }
-                
+                {formik.values.role === UserRole.studentCadre && (
+                  <>
+                    <TextField
+                      fullWidth
+                      label="打分"
+                      name="evaluatorsorce"
+                      value={formik.values.evaluatorsorce}
+                      onChange={formik.handleChange}
+                      error={formik.touched.evaluatorsorce && Boolean(formik.errors.evaluatorsorce)}
+                      helperText={formik.touched.evaluatorsorce && formik.errors.evaluatorsorce}
+                    />
+                    <TextField
+                      fullWidth
+                      label="学时(只会追加)"
+                      name="classhour"
+                      disabled={currentUser?.role != UserRole.teacher}
+                      value={formik.values.classhour}
+                      onChange={formik.handleChange}
+                      error={formik.touched.classhour && Boolean(formik.errors.classhour)}
+                      helperText={formik.touched.classhour && formik.errors.classhour}
+                    />
+                  </>
+
+                )
+                }
+
               </Stack>
               <DialogActions>
                 <Button onClick={handleCloseEdit} color="secondary">取消</Button>

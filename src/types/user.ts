@@ -12,6 +12,7 @@ export interface User {
   organization :string;
   totalScore :string;
   passwordHash :string;
+  classhour : number;
   avatarFile?: File | null; // 添加 avatarFile 字段
   selfScore? :string;//自我评价分数
   evaluatorId: string;//评价者ID
